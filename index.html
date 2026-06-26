@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volleyball Turniere</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === COLOURED PALETTES & THEMING === */
+        :root {
+            --bg-blend: rgba(11, 15, 25, 0.85);
+            --bg-img: none;
+            --accent-primary: #0ea5e9;
+            --accent-secondary: #028090;
+            --bg-block: rgba(22, 30, 49, 0.95);
+            --text-on-bg: #f8fafc;
+            --text-on-block: #f8fafc;
+            --text-muted: #94a3b8;
+            --ticker-bg: #0369a1;
+            --ticker-text: #ffffff;
+            --card-radius: 16px;
+        }
+        
+        body.theme-halle {
+            --bg-blend: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(20, 30, 57, 0.95) 100%);
+            --accent-primary: #00bcd4;
+            --accent-secondary: #0097a7;
+            --bg-block: rgba(20, 30, 57, 0.95);
+            --text-on-bg: #f8fafc;
+            --text-on-block: #f8fafc;
+            --text-muted: #94a3b8;
+            --ticker-bg: #0097a7;
+            --ticker-text: #ffffff;
+            --card-radius: 16px;
+        }
+        
+        body.theme-beach {
+            --bg-blend: linear-gradient(135deg, rgba(12, 74, 96, 0.88) 0%, rgba(234, 88, 12, 0.85) 100%);
+            --accent-primary: #facc15;
+            --accent-secondary: #ea580c;
+            --bg-block: rgba(15, 23, 42, 0.95);
+            --text-on-bg: #f8fafc;
+            --text-on-block: #f8fafc;
+            --text-muted: #cbd5e1;
+            --ticker-bg: #ea580c;
+            --ticker-text: #ffffff;
+            --card-radius: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        
+        body { 
+            color: var(--text-on-bg);
+            background: var(--bg-blend), var(--bg-img);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden; 
+            padding-top: 140px;
+            transition: background 0.5s ease;
+        }
+
+        /* --- NAVBAR & LOGO --- */
+        .navbar { 
+            position: fixed; top: 37px; left: 0; width: 100%; 
+            background: rgba(11, 15, 25, 0.7); backdrop-filter: blur(20px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000; 
+            display: flex; flex-direction: column; align-items: center; 
+            padding: 1rem; gap: 0.5rem;
+        }
+        .nav-logo { font-size: 1.3rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 1px; } 
+        .nav-logo span { color: var(--accent-primary); }
+
+        /* --- ENDLOS-MARQUEE TICKER --- */
+        .countdown-ticker { 
+            position: fixed; top: 0; left: 0; width: 100%; 
+            background: var(--ticker-bg); color: var(--ticker-text); 
+            padding: 0.6rem 0; font-weight: 700; 
+            font-size: 0.85rem; z-index: 1001; box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            transition: background 0.5s ease;
+            overflow: hidden; white-space: nowrap;
+        }
+        .ticker-wrap {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee-speed 22s linear infinite;
+        }
+        @keyframes marquee-speed {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+        
+        /* MODERN SPORT TOGGLE */
+        .toggle-container { display: flex; justify-content: center; margin: 1rem 0 3rem 0; }
+        .sport-toggle { background: rgba(0, 0, 0, 0.4); border: 2px solid rgba(255,255,255,0.1); padding: 0.3rem; display: inline-flex; position: relative; border-radius: 99px; width: 100%; max-width: 360px; }
+        .toggle-btn { background: transparent; border: none; color: #ffffff; opacity: 0.6; padding: 0.7rem 0; flex: 1; font-size: 0.95rem; font-weight: 700; cursor: pointer; z-index: 2; border-radius: 99px; text-align: center; transition: opacity 0.3s; }
+        .toggle-btn.active { opacity: 1; color: #ffffff; } 
+        .toggle-slider { position: absolute; top: 0.3rem; left: 0.3rem; bottom: 0.3rem; width: calc(50% - 0.3rem); background: var(--accent-primary); z-index: 1; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 99px; }
+        .sport-toggle.beach-active .toggle-slider { transform: translateX(100%); }
+
+        /* --- TYPOGRAPHY --- */
+        .section-headline { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; line-height: 1.1; margin-bottom: 0.5rem; color: var(--text-on-bg); }
+        .section-headline span { color: var(--accent-primary); }
+        .section-intro-text { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 700px; line-height: 1.6; }
+
+        /* --- HIGHLIGHTED BLOCKS --- */
+        .highlight-block { 
+            background: var(--bg-block); 
+            color: var(--text-on-block);
+            padding: 2rem; margin-bottom: 3rem; border-radius: var(--card-radius); 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        .highlight-block h2 { font-size: 1.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1.2rem; border-left: 5px solid var(--accent-primary); padding-left: 0.7rem; }
+        .highlight-block p { color: var(--text-on-block); opacity: 0.85; line-height: 1.6; font-size: 1rem; }
+        
+        /* BANNER */
+        .unknown-banner { border: 3px dashed var(--accent-primary); padding: 3rem 1.5rem; border-radius: var(--card-radius); text-align: center; margin-bottom: 3rem; background: rgba(0,0,0,0.2); }
+        .unknown-banner h3 { font-size: 1.8rem; text-transform: uppercase; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent-primary); }
+        
+        /* VALUES GRID */
+        .values-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem; }
+        .value-box { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 2rem 1.5rem; border-radius: var(--card-radius); text-align: left; }
+        .value-number { font-size: 2.5rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem; display: block; color: var(--accent-primary); opacity: 0.8; }
+        .value-box h3 { font-size: 1.3rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .value-box p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+        
+        /* REGISTRATION FORM STYLING */
+        .registration-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-control { width: 100%; background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); padding: 0.8rem 1rem; color: #fff; font-size: 1rem; font-weight: 500; border-radius: 8px; }
+        .form-control:focus { outline: none; border-color: var(--accent-primary); }
+        select.form-control option { background: #141e39; color: #fff; }
+        select.form-control option:disabled { color: #64748b; font-style: italic; }
+        
+        /* --- BUTTONS --- */
+        .btn { 
+            display: inline-block; width: 100%; text-align: center;
+            background: var(--accent-primary); color: #000; padding: 0.9rem 2rem; 
+            font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px;
+            text-decoration: none; border-radius: 99px; 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-top: 1rem; border: none; cursor: pointer; 
+        }
+        body.theme-beach .btn { color: #000; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); opacity: 0.95; }
+        .btn-disabled { background: #334155 !important; color: #94a3b8 !important; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        
+        .btn-toggle-details { background: transparent !important; color: var(--text-on-bg) !important; border: 2px solid var(--accent-primary) !important; }
+        
+        .badge-info { background: #ea580c; color: white; padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; display: inline-block; line-height: 1.4; }
+        .deadline-info { 
+            background: rgba(14, 165, 233, 0.15); 
+            border: 1px solid var(--accent-primary); 
+            color: #fff; 
+            padding: 0.8rem; 
+            border-radius: 8px; 
+            font-size: 0.9rem; 
+            margin-bottom: 1.5rem; 
+            display: block; 
+            line-height: 1.5; 
+        }
+
+        /* --- TURNIERLISTE --- */
+        .archive-section-title { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin: 3rem 0 1.5rem 0; color: var(--text-on-bg); letter-spacing: -0.5px; }
+        .tournament-list-grid { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem; }
+        
+        .tournament-list-item { 
+            display: flex; flex-direction: column; gap: 1.5rem; 
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: var(--card-radius); padding: 1.5rem; backdrop-filter: blur(10px);
+        }
+        .list-img-box { width: 100%; height: 200px; border-radius: calc(var(--card-radius) - 4px); background-size: cover; background-position: center; }
+        .tournament-list-item h3 { font-size: 1.6rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.4rem; }
+        
+        .accordion-content { 
+            display: none; margin-top: 1rem; padding: 1.2rem; 
+            background: rgba(0,0,0,0.2); border-radius: 8px;
+            border-top: 3px solid var(--accent-primary); 
+            animation: fadeIn 0.4s ease forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .live-highlight-card { border: 2px solid #ef4444 !important; background: rgba(239, 68, 68, 0.05) !important; position: relative; }
+        .live-badge { position: absolute; top: 15px; right: 15px; background: #ef4444; color: #fff; padding: 0.3rem 0.8rem; font-weight: 800; font-size: 0.8rem; border-radius: 4px; text-transform: uppercase; }
+
+        /* --- COMPACT PAST ARCHIVE --- */
+        .compact-past-item {
+            display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 1rem 0; gap: 0.5rem;
+        }
+        .compact-past-info { font-size: 1rem; }
+        .compact-past-title { font-weight: 800; text-transform: uppercase; color: var(--text-on-bg); }
+        .compact-past-meta { font-size: 0.85rem; opacity: 0.7; font-weight: 500; color: var(--text-muted); }
+        .compact-past-item .btn { margin-top: 0; padding: 0.5rem 1.2rem; font-size: 0.8rem; width: auto; }
+
+        /* --- RESPONSIVE UPGRADES --- */
+        @media (min-width: 768px) {
+            body { padding-top: 150px; }
+            .navbar { flex-direction: row; justify-content: space-between; padding: 1.2rem 3rem; }
+            .container { padding: 3rem 2rem; }
+            .section-headline { font-size: 3.5rem; }
+            .values-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+            .registration-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+            .tournament-list-item { grid-template-columns: 280px 1fr; display: grid; gap: 2rem; padding: 2rem; }
+            .list-img-box { height: 100%; }
+            .btn { width: auto; }
+            .compact-past-item { flex-direction: row; align-items: center; padding: 1rem 0.5rem; }
+            .compact-past-item:last-child { border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="countdown-ticker" id="live-ticker-bar">
+        <div class="ticker-wrap" id="live-ticker">Lade aktuellen Status...</div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-logo" id="nav-title">Volleyball Turniere - <span>FBG</span></div>
+    </nav>
+
+    <div class="container">
+        <div class="toggle-container">
+            <div class="sport-toggle" id="sportToggle">
+                <div class="toggle-slider"></div>
+                <button class="toggle-btn active" id="btn-toggle-halle" onclick="switchSport('halle')">Hallen-Turnier</button>
+                <button class="toggle-btn" id="btn-toggle-beach" onclick="switchSport('beach')">Beach-Turnier</button>
+            </div>
+        </div>
+
+        <div id="turniere" style="scroll-margin-top: 140px;">
+            <h1 class="section-headline" id="main-turniere-headline">GLAUBE. GEMEINSCHAFT. <span>BEGEISTERUNG.</span></h1>
+            <p class="section-intro-text">Sport verbindet - Entdecke unsere christlichen Turniere mit Fokus auf den verbindenden Glauben, die Freude am Spielen und Fairness auf dem Spielfeld.</p>
+
+            <div class="archive-section-title" id="title-sec-heute" style="color:#ef4444; display:none;">🔴 JETZT LIVE IM BETRIEB</div>
+            <div class="tournament-list-grid" id="grid-sec-heute"></div>
+
+            <div class="archive-section-title" id="title-sec-zukunft" style="color:var(--accent-primary); display:none;">⏳ NÄCHSTE TERMINE</div>
+            <div class="tournament-list-grid" id="grid-sec-zukunft"></div>
+
+            <div class="unknown-banner" id="unknown-date-banner" style="display: none;">
+                <h3 id="unknown-banner-title">Termin in Vorbereitung</h3>
+                <p id="unknown-banner-text">Informationen folgen.</p>
+            </div>
+
+            <div class="highlight-block" id="compact-past-section" style="margin-top: 3rem;">
+                <h2 id="past-archive-title">✅ Vergangene Highlights</h2>
+                <div id="compact-past-grid"></div>
+            </div>
+        </div>
+
+        <div style="margin: 4rem 0 2rem 0;">
+            <h2 class="section-headline" id="cat-detail-title">Details zur Spielart</h2>
+            <p class="section-intro-text" id="cat-detail-text" style="margin-bottom: 0;"></p>
+        </div>
+
+        <div style="margin: 4rem 0 2rem 0;">
+            <h2 class="section-headline" id="vision-title">Unsere Vision</h2>
+            <p class="section-intro-text" id="vision-intro"></p>
+            <div class="values-grid" id="values-container"></div>
+        </div>
+
+        <div class="highlight-block" id="anmeldung" style="scroll-margin-top: 140px; margin-top: 5rem;">
+            <h2 id="reg-card-title">Turnieranmeldung</h2>
+            <div class="registration-grid">
+                <div>
+                    <div class="deadline-info" id="deadline-info-box">⏱️&nbsp;Die Anmeldung schließt <span id="deadline-weeks-display">X</span>&nbsp;Wochen vor Turnierbeginn.</div>
+                    <p id="reg-left-text"></p>
+                    <p id="reg-footer-text" style="margin-top: 1.5rem; font-style: italic; opacity: 0.7;"></p>
+                </div>
+                <div>
+                    <form id="registrationForm" onsubmit="handleRegistrationSubmit(event)">
+                        <div class="badge-info" id="audit-warning-box"></div>
+                        <div class="form-group"><label id="lbl-reg-turnier">Gewünschtes Turnier</label><select class="form-control" id="reg-turnier-select" required></select></div>
+                        <div class="form-group"><label id="lbl-reg-gemeinde">Gemeinde</label><select class="form-control" id="reg-gemeinde-select" onchange="checkCommunityStatus()" required></select></div>
+                        <div class="form-group" id="new-community-group" style="display: none;"><label id="lbl-reg-new-gemeinde">Neue Gemeinde</label><input type="text" class="form-control" id="reg-new-gemeinde-name"></div>
+                        <div class="form-group"><label id="lbl-reg-teamname">Teamname</label><input type="text" class="form-control" id="reg-teamname" required></div>
+                        <div class="form-group"><label id="lbl-reg-leiter">Leiter</label><input type="text" class="form-control" id="reg-leiter" required></div>
+                        <div class="form-group"><label id="lbl-reg-email">E-Mail</label><input type="email" class="form-control" id="reg-email" required></div>
+                        <div class="form-group"><label id="lbl-reg-telefon">Telefon</label><input type="tel" class="form-control" id="reg-telefon" required></div>
+                        <div class="form-group"><label id="lbl-reg-sonstiges">Sonstiges (Notizen & Mitteilungen)</label><textarea class="form-control" id="reg-sonstiges" rows="3" style="resize: vertical; font-family: inherit;"></textarea></div>
+                        <button type="submit" id="reg-submit-btn" class="btn" style="width: 100%;">Anmeldung absenden</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-block" id="newsletter-block" style="margin-top: 3rem;">
+            <h2 id="news-card-title">Newsletter</h2>
+            <div class="registration-grid">
+                <div>
+                    <p id="news-text"></p>
+                </div>
+                <div>
+                    <form id="newsletterForm" onsubmit="handleNewsletterSubmit(event)">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="news-email" placeholder="" required>
+                        </div>
+                        <button type="submit" id="news-submit-btn" class="btn" style="width: 100%;">Anmelden</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin: 5rem 0;" id="ueber-uns">
+            <h2 class="section-headline" id="about-title">Über uns</h2>
+            <p class="section-intro-text" id="about-text" style="max-width: 850px;"></p>
+        </div>
+
+        <div class="highlight-block" id="kontakt" style="scroll-margin-top: 140px; text-align: center;">
+            <h2 id="contact-title" style="border: none; padding: 0;">Kontakt</h2>
+            <p id="contact-info-text" style="margin-bottom: 1.5rem;"></p>
+            <a href="#" id="contact-btn" class="btn" style="width: auto;">Mail schreiben</a>
+        </div>
+
+        <div class="highlight-block" id="impressum-block" style="margin-top: 5rem; font-size: 0.9rem; opacity: 0.85;">
+            <h2 id="impressum-title">Impressum</h2>
+            <p><strong id="impressum-angaben"></strong></p>
+            <p id="impressum-text" style="margin-top: 1rem; white-space: pre-line;"></p>
+        </div>
+    </div>
+
+    <script src="content.js"></script>
+    <script src="teams.js"></script>
+    <script src="events.js"></script>
+
+    <script>
+        let countdownInterval;
+
+        function formatGermanDate(dateObj) {
+            try {
+                const wochentage = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+                const monate = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+                return `📅 ${wochentage[dateObj.getDay()]}, ${dateObj.getDate()}. ${monate[dateObj.getMonth()]} ${dateObj.getFullYear()} | ⏱️ ${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')} Uhr`;
+            } catch(e) { return "📅 Datum unbekannt"; }
+        }
+
+        function isSameDay(d1, d2) {
+            return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+        }
+
+        function toggleAccordion(id) {
+            const el = document.getElementById('details-' + id);
+            const btn = document.getElementById('btn-collapse-' + id);
+            if(el.style.display === 'block') {
+                el.style.display = 'none';
+                btn.innerText = 'ℹ️ Details & Infos anzeigen';
+            } else {
+                el.style.display = 'block';
+                btn.innerText = '🔼 Details einklappen';
+            }
+        }
+
+        function openSecurePhotoLink(eventId) {
+            const eventObj = TOURNAMENT_EVENTS.find(e => e.id === eventId);
+            if(!eventObj) return;
+            const input = prompt(WEBSITE_CONTENT.gallery.promptText);
+            if (input === eventObj.albumPassword) {
+                window.open(eventObj.googleFotosUrl, '_blank');
+            } else if (input !== null) { 
+                alert(WEBSITE_CONTENT.gallery.errorText); 
+            }
+        }
+
+        function updateTickerText(newText) {
+            const ticker = document.getElementById('live-ticker');
+            ticker.innerText = `${newText}          ++++          ${newText}          ++++          `;
+        }
+
+        function buildAdditionalContentHTML(event) {
+            let html = '<div style="display:flex; flex-direction:column; gap:1.2rem; font-size:0.95rem; line-height:1.6; text-align:left;">';
+            let contentsFound = false;
+
+            if (event.details && Array.isArray(event.details)) {
+                event.details.forEach(item => {
+                    if (item.title && item.title.trim() !== "" && item.text && item.text.trim() !== "") {
+                        html += `<div>`;
+                        html += `<strong style="color:var(--accent-primary); font-size:1rem;">${item.title}:</strong><br>${item.text}`;
+                        
+                        if (item.image && item.image.trim() !== "") {
+                            html += `<br><img src="${item.image}" alt="${item.title}" style="width: 100%; max-width: 480px; border-radius: 8px; margin-top: 0.6rem; border: 1px solid rgba(255,255,255,0.15); display: block;">`;
+                        }
+                        
+                        html += `</div>`;
+                        contentsFound = true;
+                    }
+                });
+            }
+
+            if ((event.mapsUrl && event.mapsUrl.trim() !== "") || (event.turnierplanUrl && event.turnierplanUrl.trim() !== "")) {
+                html += `<div style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:0.4rem;">`;
+                if (event.mapsUrl && event.mapsUrl.trim() !== "") {
+                    html += `<a href="${event.mapsUrl}" target="_blank" class="btn" style="margin-top:0; padding:0.5rem 1.2rem; font-size:0.8rem; width:auto; background:var(--accent-secondary); color:#fff;">📍 Google Maps Standort</a>`;
+                }
+                if (event.turnierplanUrl && event.turnierplanUrl.trim() !== "") {
+                    html += `<a href="${event.turnierplanUrl}" target="_blank" class="btn" style="margin-top:0; padding:0.5rem 1.2rem; font-size:0.8rem; width:auto; background:#22c55e; color:#fff;">🏆 Online Turnierplan</a>`;
+                }
+                html += `</div>`;
+                contentsFound = true;
+            }
+
+            if (!contentsFound) {
+                html += `<p style="opacity:0.6; font-style:italic;">Keine weiteren Zusatzdetails für dieses Event hinterlegt.</p>`;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        function buildTournamentDropdown() {
+            const select = document.getElementById('reg-turnier-select');
+            select.innerHTML = '';
+            
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = "";
+            defaultOpt.text = "-- Bitte Turnier auswählen --";
+            defaultOpt.disabled = true;
+            defaultOpt.selected = true;
+            select.appendChild(defaultOpt);
+
+            const heuteDatum = new Date();
+            const allEvents = (typeof TOURNAMENT_EVENTS !== 'undefined') ? TOURNAMENT_EVENTS : [];
+            
+            const deadlineWeeks = (WEBSITE_CONTENT.registration && WEBSITE_CONTENT.registration.deadlineWeeksBefore) ? WEBSITE_CONTENT.registration.deadlineWeeksBefore : 2;
+            const msDeadlineBuffer = deadlineWeeks * 7 * 24 * 60 * 60 * 1000;
+
+            const activeEvents = allEvents.filter(event => {
+                const tDate = new Date(event.datum);
+                return isSameDay(tDate, heuteDatum) || tDate.getTime() > heuteDatum.getTime();
+            });
+
+            activeEvents.forEach(event => {
+                const opt = document.createElement('option');
+                const tDate = new Date(event.datum);
+                const formatSport = event.sport === 'halle' ? "Halle" : "Beach";
+                
+                const deadlineDate = new Date(tDate.getTime() - msDeadlineBuffer);
+                const isExpired = heuteDatum.getTime() > deadlineDate.getTime();
+
+                opt.value = event.title;
+                if (isExpired) {
+                    opt.text = `${event.title} (${formatSport}) - ❌ ANMELDUNG GESCHLOSSEN`;
+                    opt.disabled = true;
+                } else {
+                    opt.text = `${event.title} (${formatSport} - ${tDate.getDate()}.${tDate.getMonth() + 1}.${tDate.getFullYear()})`;
+                }
+                select.appendChild(opt);
+            });
+        }
+
+        function renderSportContent(type) {
+            const gridHeute = document.getElementById('grid-sec-heute');
+            const gridZukunft = document.getElementById('grid-sec-zukunft');
+            const gridVergangen = document.getElementById('compact-past-grid');
+            
+            gridHeute.innerHTML = ''; gridZukunft.innerHTML = ''; gridVergangen.innerHTML = '';
+
+            const allEvents = (typeof TOURNAMENT_EVENTS !== 'undefined') ? TOURNAMENT_EVENTS : [];
+            const sportEvents = allEvents.filter(e => e.sport === type);
+            
+            const heuteDatum = new Date();
+            let countHeute = 0, countZukunft = 0, countVergangen = 0;
+            let nextAnstehendesEvent = null;
+
+            sportEvents.sort((a,b) => new Date(a.datum) - new Date(b.datum));
+
+            const heuteEvents = [];
+            const zukunftEvents = [];
+            const vergangenEvents = [];
+
+            sportEvents.forEach(event => {
+                const tDate = new Date(event.datum);
+                if (isSameDay(tDate, heuteDatum)) { heuteEvents.push(event); }
+                else if (tDate.getTime() > heuteDatum.getTime()) { zukunftEvents.push(event); }
+                else { vergangenEvents.push(event); }
+            });
+            vergangenEvents.sort((a,b) => new Date(b.datum) - new Date(a.datum));
+
+            const labelShort = type === 'halle' ? WEBSITE_CONTENT.labels.halleShort : WEBSITE_CONTENT.labels.beachShort;
+
+            heuteEvents.forEach(event => {
+                countHeute++;
+                const tDate = new Date(event.datum);
+                const hasUrl = event.googleFotosUrl && event.googleFotosUrl.trim() !== "";
+                let photoButtonHtml = hasUrl 
+                    ? `<button onclick="openSecurePhotoLink('${event.id}')" class="btn">${WEBSITE_CONTENT.gallery.btnExternalText}</button>` 
+                    : `<button class="btn btn-disabled">${WEBSITE_CONTENT.gallery.btnExternalComingSoon}</button>`;
+
+                const item = document.createElement('div');
+                item.className = "tournament-list-item live-highlight-card";
+                item.innerHTML = `
+                    <div class="live-badge">LIVE HEUTE</div>
+                    <div class="list-img-box" style="background-image: url('${event.coverImage || ''}')"></div>
+                    <div>
+                        <h3 style="color: #ef4444;">${event.title}</h3>
+                        <div style="font-size:0.95rem; font-weight:700; margin-bottom:0.8rem;">
+                            ${formatGermanDate(tDate)} <br>📍 ${event.ort}
+                        </div>
+                        <p style="opacity: 0.9;">${event.description}</p>
+                        <div style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:0.5rem;">
+                            <button id="btn-collapse-${event.id}" onclick="toggleAccordion('${event.id}')" class="btn btn-toggle-details" style="width:auto;">ℹ️ Details & Infos</button>
+                            ${photoButtonHtml}
+                        </div>
+                        <div class="accordion-content" id="details-${event.id}">
+                            ${buildAdditionalContentHTML(event)}
+                        </div>
+                    </div>
+                `;
+                gridHeute.appendChild(item);
+            });
+
+            const deadlineWeeks = (WEBSITE_CONTENT.registration && WEBSITE_CONTENT.registration.deadlineWeeksBefore) ? WEBSITE_CONTENT.registration.deadlineWeeksBefore : 2;
+            const msDeadlineBuffer = deadlineWeeks * 7 * 24 * 60 * 60 * 1000;
+
+            zukunftEvents.forEach((event, idx) => {
+                countZukunft++;
+                if (idx === 0) nextAnstehendesEvent = event;
+
+                const tDate = new Date(event.datum);
+                const msUntilEvent = tDate.getTime() - heuteDatum.getTime();
+                const isExpired = msUntilEvent < msDeadlineBuffer;
+
+                let actionButtonHtml = isExpired 
+                    ? `<button class="btn btn-disabled" style="width:auto;">Anmeldung geschlossen</button>`
+                    : `<a href="#anmeldung" class="btn" style="width:auto;">Jetzt Anmelden</a>`;
+
+                const item = document.createElement('div');
+                item.className = "tournament-list-item";
+                item.innerHTML = `
+                    <div class="list-img-box" style="background-image: url('${event.coverImage || ''}')"></div>
+                    <div>
+                        <h3>${event.title}</h3>
+                        <div style="font-size:0.95rem; color:var(--accent-primary); font-weight:700; margin-bottom:0.8rem;">
+                            ${formatGermanDate(tDate)} <br>📍 ${event.ort}
+                        </div>
+                        <p style="opacity: 0.85;">${event.description}</p>
+                        <div style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:0.5rem;">
+                            <button id="btn-collapse-${event.id}" onclick="toggleAccordion('${event.id}')" class="btn btn-toggle-details" style="width:auto;">ℹ️ Details & Infos</button>
+                            ${actionButtonHtml}
+                        </div>
+                        <div class="accordion-content" id="details-${event.id}">
+                            ${buildAdditionalContentHTML(event)}
+                        </div>
+                    </div>
+                `;
+                gridZukunft.appendChild(item);
+            });
+
+            vergangenEvents.forEach(event => {
+                countVergangen++;
+                const tDate = new Date(event.datum);
+                const hasUrl = event.googleFotosUrl && event.googleFotosUrl.trim() !== "";
+                let photoButtonHtml = hasUrl 
+                    ? `<button onclick="openSecurePhotoLink('${event.id}')" class="btn">${WEBSITE_CONTENT.gallery.btnExternalText}</button>` 
+                    : `<button class="btn btn-disabled">${WEBSITE_CONTENT.gallery.btnExternalComingSoon}</button>`;
+
+                const item = document.createElement('div');
+                item.className = "compact-past-item";
+                item.innerHTML = `
+                    <div class="compact-past-info">
+                        <div class="compact-past-title">${event.title}</div>
+                        <div class="compact-past-meta">📅 ${tDate.getDate()}. ${tDate.toLocaleString('de-DE', { month: 'short' })} ${tDate.getFullYear()} | 📍 ${event.ort}</div>
+                    </div>
+                    <div>${photoButtonHtml}</div>
+                `;
+                gridVergangen.appendChild(item);
+            });
+
+            document.getElementById('title-sec-heute').style.display = countHeute > 0 ? 'block' : 'none';
+            document.getElementById('title-sec-zukunft').style.display = countZukunft > 0 ? 'block' : 'none';
+            document.getElementById('compact-past-section').style.display = countVergangen > 0 ? 'block' : 'none';
+
+            if (countHeute === 0 && countZukunft === 0) {
+                document.getElementById('anmeldung').style.display = "none";
+                document.getElementById('unknown-date-banner').style.display = "block";
+                document.getElementById('unknown-banner-title').innerText = WEBSITE_CONTENT.unknownDateBanner.title;
+                document.getElementById('unknown-banner-text').innerText = WEBSITE_CONTENT.unknownDateBanner.text;
+                updateTickerText(WEBSITE_CONTENT.ticker.noEvent.replace('[SPORT]', labelShort));
+                clearInterval(countdownInterval);
+            } else {
+                document.getElementById('unknown-date-banner').style.display = "none";
+                document.getElementById('anmeldung').style.display = "block";
+                
+                if (countHeute > 0) {
+                    updateTickerText(WEBSITE_CONTENT.ticker.runningNow.replace('[SPORT]', labelShort));
+                    clearInterval(countdownInterval);
+                } else if (nextAnstehendesEvent) {
+                    startCountdown(new Date(nextAnstehendesEvent.datum), labelShort);
+                }
+            }
+
+            const detailKey = type === 'halle' ? 'halle' : 'beach';
+            if (WEBSITE_CONTENT.tournamentDetails && WEBSITE_CONTENT.tournamentDetails[detailKey]) {
+                document.getElementById('cat-detail-title').innerText = WEBSITE_CONTENT.tournamentDetails[detailKey].title;
+                document.getElementById('cat-detail-text').innerText = WEBSITE_CONTENT.tournamentDetails[detailKey].text;
+            }
+        }
+
+        function startCountdown(targetDate, label) {
+            function calculate() {
+                const now = new Date().getTime();
+                const difference = targetDate.getTime() - now;
+                if (difference < 0 && Math.abs(difference) < (8 * 60 * 60 * 1000)) { 
+                    updateTickerText(WEBSITE_CONTENT.ticker.runningNow.replace('[SPORT]', label)); 
+                    return; 
+                }
+                if (difference < 0) { 
+                    updateTickerText(WEBSITE_CONTENT.ticker.archiveMode.replace('[SPORT]', label)); 
+                    return; 
+                }
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                
+                const generatedString = WEBSITE_CONTENT.ticker.countdownPrefix.replace('[SPORT]', label) + `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                updateTickerText(generatedString);
+            }
+            calculate();
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(calculate, 1000);
+        }
+
+        function switchSport(type) {
+            if(WEBSITE_CONTENT) WEBSITE_CONTENT.currentActiveSport = type;
+            const toggle = document.getElementById('sportToggle');
+            if(toggle) {
+                const buttons = toggle.getElementsByClassName('toggle-btn');
+                if (type === 'halle') {
+                    toggle.classList.remove('beach-active'); 
+                    buttons[0].classList.add('active'); 
+                    buttons[1].classList.remove('active'); 
+                    document.body.className = 'theme-halle';
+                    document.body.style.setProperty('--bg-img', `url('${WEBSITE_CONTENT.bgImageHalle || ''}')`);
+                } else {
+                    toggle.classList.add('beach-active'); 
+                    buttons[0].classList.remove('active'); 
+                    buttons[1].classList.add('active'); 
+                    document.body.className = 'theme-beach';
+                    document.body.style.setProperty('--bg-img', `url('${WEBSITE_CONTENT.bgImageBeach || ''}')`);
+                }
+            }
+            renderSportContent(type);
+        }
+
+        function buildCommunityDropdown() {
+            const select = document.getElementById('reg-gemeinde-select');
+            select.innerHTML = '';
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = ""; 
+            defaultOpt.text = WEBSITE_CONTENT.registration.placeholders.gemeindeSelectDefault; 
+            defaultOpt.disabled = true; 
+            defaultOpt.selected = true;
+            select.appendChild(defaultOpt);
+            
+            if (typeof REGISTERED_COMMUNITIES !== 'undefined') {
+                REGISTERED_COMMUNITIES.forEach(comm => {
+                    const opt = document.createElement('option'); 
+                    opt.value = comm; 
+                    opt.text = comm; 
+                    select.appendChild(opt);
+                });
+            }
+            const newOpt = document.createElement('option'); 
+            newOpt.value = "NEW"; 
+            newOpt.text = WEBSITE_CONTENT.registration.placeholders.gemeindeSelectNewOption;
+            select.appendChild(newOpt);
+        }
+
+        function checkCommunityStatus() {
+            const select = document.getElementById('reg-gemeinde-select');
+            document.getElementById('audit-warning-box').style.display = select.value === "NEW" ? "block" : "none";
+            document.getElementById('new-community-group').style.display = select.value === "NEW" ? "block" : "none";
+        }
+
+        function handleRegistrationSubmit(event) {
+            event.preventDefault();
+            const selectValue = document.getElementById('reg-gemeinde-select').value;
+            const chosenTournament = document.getElementById('reg-turnier-select').value;
+            const gemeindeName = (selectValue === "NEW") ? document.getElementById('reg-new-gemeinde-name').value : selectValue;
+            const teamName = document.getElementById('reg-teamname').value;
+            const leiter = document.getElementById('reg-leiter').value;
+            const email = document.getElementById('reg-email').value;
+            const telefon = document.getElementById('reg-telefon').value;
+            const sonstiges = document.getElementById('reg-sonstiges').value || "Keine Anmerkungen";
+            const statusText = (selectValue === "NEW") ? WEBSITE_CONTENT.emailTemplate.statusNewCommunity : WEBSITE_CONTENT.emailTemplate.statusExistingCommunity;
+
+            let finalSubject = WEBSITE_CONTENT.emailTemplate.subject.replace("[TURNIER]", chosenTournament).replace("[TEAM]", teamName);
+            let finalBody = WEBSITE_CONTENT.emailTemplate.body.replace(/\[TURNIER\]/g, chosenTournament).replace(/\[TEAM\]/g, teamName).replace(/\[GEMEINDE\]/g, gemeindeName).replace(/\[STATUS\]/g, statusText).replace(/\[LEITER\]/g, leiter).replace(/\[EMAIL\]/g, email).replace(/\[TELEFON\]/g, telefon);
+
+            finalBody += `\n\nSonstiges / Notizen:\n${sonstiges}`;
+
+            window.location.href = `mailto:${WEBSITE_CONTENT.emailReceiverDummy}?subject=${encodeURIComponent(finalSubject)}&body=${encodeURIComponent(finalBody)}`;
+            alert("Mail-Anmeldung generiert!");
+            document.getElementById('registrationForm').reset();
+            checkCommunityStatus();
+            buildTournamentDropdown();
+        }
+
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('news-email').value;
+            
+            const config = WEBSITE_CONTENT.newsletter || {};
+            const receiver = config.receiverEmail || "newsletter@example.com";
+            const subject = config.mailSubject || "Newsletter-Anmeldung";
+            const bodyTemplate = config.mailBody || "Bitte fügen Sie mich hinzu: [EMAIL]";
+            
+            const finalBody = bodyTemplate.replace("[EMAIL]", email);
+            
+            window.location.href = `mailto:${receiver}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(finalBody)}`;
+            
+            alert("Newsletter-Anmeldung generiert!");
+            document.getElementById('newsletterForm').reset();
+        }
+
+        function renderStaticTexts() {
+            const title = WEBSITE_CONTENT.headerTitle || "Volleyball Turniere - FBG";
+            const parts = title.includes(' - ') ? title.split(' - ') : [title, "FBG"];
+            document.getElementById('nav-title').innerHTML = `${parts[0]} - <span>${parts[1]}</span>`;
+            
+            document.getElementById('btn-toggle-halle').innerText = WEBSITE_CONTENT.labels.halleShort;
+            document.getElementById('btn-toggle-beach').innerText = WEBSITE_CONTENT.labels.beachShort;
+            
+            document.getElementById('vision-title').innerText = WEBSITE_CONTENT.vision.title;
+            document.getElementById('vision-intro').innerText = WEBSITE_CONTENT.vision.intro;
+            let visionHtml = '';
+            WEBSITE_CONTENT.vision.items.forEach(item => {
+                visionHtml += `<div class="value-box"><span class="value-number">${item.num}</span><h3>${item.title}</h3><p style="margin-top: 0.5rem;">${item.text}</p></div>`;
+            });
+            document.getElementById('values-container').innerHTML = visionHtml;
+
+            document.getElementById('reg-card-title').innerText = WEBSITE_CONTENT.registration.title;
+            document.getElementById('audit-warning-box').innerHTML = WEBSITE_CONTENT.registration.auditWarningBox;
+            document.getElementById('reg-left-text').innerText = WEBSITE_CONTENT.registration.leftText;
+            document.getElementById('reg-footer-text').innerText = WEBSITE_CONTENT.registration.footerText;
+            document.getElementById('reg-submit-btn').innerText = WEBSITE_CONTENT.registration.submitBtnText;
+            
+            const dWeeks = (WEBSITE_CONTENT.registration && WEBSITE_CONTENT.registration.deadlineWeeksBefore) ? WEBSITE_CONTENT.registration.deadlineWeeksBefore : 2;
+            document.getElementById('deadline-weeks-display').innerText = dWeeks;
+
+            document.getElementById('lbl-reg-gemeinde').innerText = WEBSITE_CONTENT.registration.labels.gemeinde;
+            document.getElementById('lbl-reg-new-gemeinde').innerText = WEBSITE_CONTENT.registration.labels.newGemeinde;
+            document.getElementById('lbl-reg-teamname').innerText = WEBSITE_CONTENT.registration.labels.teamname;
+            document.getElementById('lbl-reg-leiter').innerText = WEBSITE_CONTENT.registration.labels.leiter;
+            document.getElementById('lbl-reg-email').innerText = WEBSITE_CONTENT.registration.labels.email;
+            document.getElementById('lbl-reg-telefon').innerText = WEBSITE_CONTENT.registration.labels.telefon;
+
+            if (WEBSITE_CONTENT.newsletter) {
+                document.getElementById('news-card-title').innerText = WEBSITE_CONTENT.newsletter.title;
+                document.getElementById('news-text').innerText = WEBSITE_CONTENT.newsletter.text;
+                document.getElementById('news-email').setAttribute('placeholder', WEBSITE_CONTENT.newsletter.placeholder);
+                document.getElementById('news-submit-btn').innerText = WEBSITE_CONTENT.newsletter.submitBtnText;
+            }
+
+            document.getElementById('about-title').innerText = WEBSITE_CONTENT.aboutUs.title;
+            document.getElementById('about-text').innerText = WEBSITE_CONTENT.aboutUs.text;
+            
+            document.getElementById('contact-title').innerText = WEBSITE_CONTENT.contact.title;
+            document.getElementById('contact-info-text').innerText = WEBSITE_CONTENT.contact.info;
+            document.getElementById('contact-btn').innerText = WEBSITE_CONTENT.contact.btnText;
+            
+            const rec = WEBSITE_CONTENT.contact.receiverEmail || "info@example.com";
+            const sub = WEBSITE_CONTENT.contact.mailSubject || "Anfrage";
+            document.getElementById('contact-btn').setAttribute('href', `mailto:${rec}?subject=${encodeURIComponent(sub)}`);
+
+            // NEU: STATIC TEXT RENDERING FÜR IMPRESSUM
+            if (WEBSITE_CONTENT.impressum) {
+                document.getElementById('impressum-title').innerText = WEBSITE_CONTENT.impressum.title;
+                document.getElementById('impressum-angaben').innerText = WEBSITE_CONTENT.impressum.angaben;
+                document.getElementById('impressum-text').innerHTML = WEBSITE_CONTENT.impressum.text;
+            }
+        }
+
+        window.onload = function() {
+            renderStaticTexts(); 
+            buildCommunityDropdown(); 
+            buildTournamentDropdown();
+            checkCommunityStatus();     
+            switchSport(WEBSITE_CONTENT.currentActiveSport || "halle"); 
+        };
+    </script>
+</body>
+</html>

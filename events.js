@@ -12,30 +12,37 @@ const TOURNAMENT_EVENTS = [
         datum: "2026-07-25T10:00:00", 
         ort: "TS Herzogenaurach",
         coverImage: "bilder/Beach-Turnier-2026.png",
-        description: "Unser Sommer-Turnier auf der schönen Anlage des TS Herzogenaurach. Wir freuen uns auf Sonne, Spaß und Gemeinschaft.",
+        description: "Unser Sommer-Turnier auf der schönen Anlage der TS Herzogenaurach. Wir freuen uns auf Sonne, Spaß und Gemeinschaft.",
         
         // --- FLEXIBLE DETAILS (Jeder Block kann Text UND optional ein eigenes Bild haben!) ---
         details: [
-            { 
+		{ 
+                title: "💰 Startgebühr inkl. Mittagessen", 
+                text: "7€ pro Spieler, 4€ pro Zuschauer",
+                image: "" // Kein Bild für diesen Bereich
+            },            
+
+		{ 
                 title: "🍎 Verpflegung & Essen", 
-                text: "Es gibt einen Foodtruck vor Ort. Bitte kein Mittagessen selbst mitbringen, nach Absprache mit dem Foodtruck-Anbieter.\nAllerdings freuen wir uns über Kuchen / Snacks / Fingerfood für den Nachmittag.",
+                text: "Mittagessen wird es vor Ort geben (im Preis enthalten). Für den Nachmittag können gerne Fingerfood / Snacks mitgebracht werden (kleiner Kühlschrank vor Ort).",
                 image: "" // Bild für die Verpflegung
+            },
+	 { 
+                title: "🥤Getränke", 
+                text: "Es sind KEINE Getränke vor Ort erhältlich. Bitte selbst mitbringen!",
+                image: "" // Bild 
+
             },
 	    { 
                 title: "", 
                 text: "",
-                image: "" // Bild für die Verpflegung
-            },
+                image: "" // Bild 
 
-            { 
-                title: "💰 Startgebühr", 
-                text: "5€ pro Spieler, Zuschauer kostenlos.",
-                image: "" // Kein Bild für diesen Bereich
             },
             { 
                 title: "🅿️ Parken", 
-                text: "Parkplätze sind ausreichend auf dem markierten Ort verfügbar.",
-                image: "bilder/Parkplatz-Herzogenaurach.png" // Bild für den Turnierplan / Lageplan
+                text: "Das Parken ist vor dem Sportheim möglich.",
+                image: "bilder/Parken-Herzogenaurach.png" // Bild für den Turnierplan / Lageplan
             }
 
         ],

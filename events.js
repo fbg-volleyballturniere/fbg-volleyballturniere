@@ -43,14 +43,21 @@ const TOURNAMENT_EVENTS = [
                 title: "🅿️ Parken", 
                 text: "Das Parken ist vor dem Sportheim möglich.",
                 image: "bilder/Parken-Herzogenaurach.png" // Bild für den Turnierplan / Lageplan
-            }
+            },
+		{ 
+                title: "⏰ Ende", 
+                text: "Geplantes Turnierende ist 18:00 Uhr.",
+                image: "" // Bild 
+
+            },
+
 
         ],
 
         
         // --- EXTERNE LINKS (Einfach Link eintragen oder "" leer lassen) ---
         mapsUrl: "https://maps.app.goo.gl/PtVu3RWGQisEudbu9", 
-        turnierplanUrl: "https://www.meinturnierplan.de", 
+        turnierplanUrl: "https://www.meinturnierplan.de/c/8ty2ubn4/beachvolleyball-turnier-25-07-2026/", 
 
         // --- FOTO GALERIE (Nach dem Turnier) ---
         googleFotosUrl: "https://photos.google.com", 

@@ -40,7 +40,7 @@ const WEBSITE_CONTENT = {
         },
         beach: {
             title: "Regeln und Spielablauf",
-            text: "- ab 13 Jahren \n- 6 Spieler pro Team, darunter mind. 2 Frauen und mind. 1 Frau immer auf dem Feld \n- Gruppenspiele auf Punkte bis 25 (max. 15min) \n- keine Beach-Technikregeln \n- Netzberührung ist ein Fehler \n- Übertreten unter dem Netz ist nur ein Fehler, wenn ein Gegner dadurch behindert oder gefährdet wird"
+            text: "Wir spielen ohne Schiedsrichter - beide Teams entscheiden gemeinsam und fair! \n- ab 13 Jahren \n- 6 Spieler pro Team, darunter mind. 2 Frauen und mind. 1 Frau immer auf dem Feld \n- Gruppenspiele auf Punkte bis 25 (max. 15min) \n- keine Beach-Technikregeln \n- Netzberührungen sind nur erlaubt, wenn die Aktion nichts mit dem Spielgeschehen zu tun hatte \n- Der Block zählt nicht als erste Ballberührung \n- Übertreten unter dem Netz ist nur ein Fehler, wenn ein Gegner dadurch behindert oder gefährdet wird"
         }
     },
 
@@ -91,7 +91,7 @@ const WEBSITE_CONTENT = {
     // --- SEKTION: ÜBER UNS ---
     aboutUs: {
         title: "Über uns",
-        text: "Text über das Organisations-Team."
+        text: "Die Organisation der Turniere geschieht (hauptsächlich) durch Mitglieder der Freien Baptisten-Gemeinde (FBG) Erlangen. Die Turniere wurden ins Leben gerufen, um die Gemeinschaft und Beziehungen unter den anderen Freien Baptisten-Gemeinden, sowie anderen bibeltreuen Freikirchen zu stärken und sie zu vernetzen. Zudem ist die persönliche Einladung von Gästen ein großes Anliegen, um Gottes gute Botschaft zu teilen und seine Liebe zu uns beim gemeinsamen Sport praktisch weiterzugeben. ''Ob ihr nun esst oder trinkt oder sonst etwas tut — tut alles zur Ehre Gottes!'' - 1. Korinther 10,31 (Die Bibel)."
     },
 
     // --- SEKTION: KONTAKT ---

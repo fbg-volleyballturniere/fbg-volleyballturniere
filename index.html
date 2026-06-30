@@ -237,7 +237,7 @@
 
         <div id="turniere" style="scroll-margin-top: 140px;">
             <h1 class="section-headline" id="main-turniere-headline">GLAUBE. GEMEINSCHAFT. <span>BEGEISTERUNG.</span></h1>
-            <p class="section-intro-text">Sport verbindet - Entdecke unsere christlichen Turniere mit Fokus auf den verbindenden Glauben, die Freude am Spielen und Fairness auf dem Spielfeld.</p>
+            <p class="section-intro-text">Sport verbindet – Entdecke unsere christlichen Turniere mit Fokus auf den verbindenden Glauben, die Freude am Spielen und Fairness auf dem Spielfeld. Erlebe Gemeinschaft im Kreise unserer teilnehmenden Freien Baptisten-Gemeinden.</p>
 
             <div class="archive-section-title" id="title-sec-heute" style="color:#ef4444; display:none;">🔴 JETZT LIVE IM BETRIEB</div>
             <div class="tournament-list-grid" id="grid-sec-heute"></div>
@@ -277,10 +277,12 @@
                 </div>
                 <div>
                     <form id="registrationForm" onsubmit="handleRegistrationSubmit(event)">
-                        <div class="badge-info" id="audit-warning-box"></div>
-                        <div class="form-group"><label id="lbl-reg-turnier">Gewünschtes Turnier</label><select class="form-control" id="reg-turnier-select" required></select></div>
+                                               <div class="form-group"><label id="lbl-reg-turnier">Gewünschtes Turnier</label><select class="form-control" id="reg-turnier-select" required></select></div>
                         <div class="form-group"><label id="lbl-reg-gemeinde">Gemeinde</label><select class="form-control" id="reg-gemeinde-select" onchange="checkCommunityStatus()" required></select></div>
-                        <div class="form-group" id="new-community-group" style="display: none;"><label id="lbl-reg-new-gemeinde">Neue Gemeinde</label><input type="text" class="form-control" id="reg-new-gemeinde-name"></div>
+                        <div class="form-group" id="new-community-group" style="display: none;">
+    <label id="lbl-reg-new-gemeinde">Neue Gemeinde</label>
+    <input type="text" class="form-control" id="reg-new-gemeinde-name">
+</div>
                         <div class="form-group"><label id="lbl-reg-teamname">Teamname</label><input type="text" class="form-control" id="reg-teamname" required></div>
                         <div class="form-group"><label id="lbl-reg-leiter">Leiter</label><input type="text" class="form-control" id="reg-leiter" required></div>
                         <div class="form-group"><label id="lbl-reg-email">E-Mail</label><input type="email" class="form-control" id="reg-email" required></div>
@@ -668,18 +670,9 @@
                     select.appendChild(opt);
                 });
             }
-            const newOpt = document.createElement('option'); 
-            newOpt.value = "NEW"; 
-            newOpt.text = WEBSITE_CONTENT.registration.placeholders.gemeindeSelectNewOption;
-            select.appendChild(newOpt);
-        }
+            }
 
-        function checkCommunityStatus() {
-            const select = document.getElementById('reg-gemeinde-select');
-            document.getElementById('audit-warning-box').style.display = select.value === "NEW" ? "block" : "none";
-            document.getElementById('new-community-group').style.display = select.value === "NEW" ? "block" : "none";
-        }
-
+       
         function handleRegistrationSubmit(event) {
             event.preventDefault();
             const selectValue = document.getElementById('reg-gemeinde-select').value;
@@ -738,7 +731,6 @@
             document.getElementById('values-container').innerHTML = visionHtml;
 
             document.getElementById('reg-card-title').innerText = WEBSITE_CONTENT.registration.title;
-            document.getElementById('audit-warning-box').innerHTML = WEBSITE_CONTENT.registration.auditWarningBox;
             document.getElementById('reg-left-text').innerText = WEBSITE_CONTENT.registration.leftText;
             document.getElementById('reg-footer-text').innerText = WEBSITE_CONTENT.registration.footerText;
             document.getElementById('reg-submit-btn').innerText = WEBSITE_CONTENT.registration.submitBtnText;
@@ -782,8 +774,7 @@
         window.onload = function() {
             renderStaticTexts(); 
             buildCommunityDropdown(); 
-            buildTournamentDropdown();
-            checkCommunityStatus();     
+            buildTournamentDropdown();   
             switchSport(WEBSITE_CONTENT.currentActiveSport || "halle"); 
         };
     </script>

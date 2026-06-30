@@ -59,7 +59,6 @@ const WEBSITE_CONTENT = {
     registration: {
         title: "Turnier-Anmeldung",
         deadlineWeeksBefore: 2, // <--- Bestimmt die Anzahl an Wochen vor einem Turnier, bis wann die Anmeldung noch möglich ist
-        auditWarningBox: "⚠️ <strong>Hinweis zur Prüfung:</strong> Da deine Gemeinde noch nicht in unserer Datenbank registriert ist, wird deine Anmeldung von der Turnierleitung manuell geprüft. Du erhältst im Anschluss eine Bestätigung.",
         leftText: "Fülle das Formular vollständig aus. Nach dem Absenden öffnet sich dein E-Mail-Programm mit einer vorgefertigten Nachricht. Schicke diese einfach ab, um dein Team anzumelden. Bitte beachte, dass die Anmeldung erst mit Erhalt unserer Bestätigungsmail verbindlich ist.",
         footerText: "Du möchtest mehrere Teams anmelden? \nSende das Formular einfach mehrfach ab und vermerke dies im ''Sonstiges''-Feld.",
         submitBtnText: "Anmeldung via E-Mail absenden",
@@ -91,7 +90,7 @@ const WEBSITE_CONTENT = {
     // --- SEKTION: ÜBER UNS ---
     aboutUs: {
         title: "Über uns",
-        text: "Die Organisation der Turniere geschieht (hauptsächlich) durch Mitglieder der Freien Baptisten-Gemeinde (FBG) Erlangen. Die Turniere wurden ins Leben gerufen, um die Gemeinschaft und Beziehungen unter den anderen Freien Baptisten-Gemeinden, sowie anderen bibeltreuen Freikirchen zu stärken und sie zu vernetzen. Zudem ist die persönliche Einladung von Gästen ein großes Anliegen, um Gottes gute Botschaft zu teilen und seine Liebe zu uns beim gemeinsamen Sport praktisch weiterzugeben. ''Ob ihr nun esst oder trinkt oder sonst etwas tut — tut alles zur Ehre Gottes!'' - 1. Korinther 10,31 (Die Bibel)."
+        text: "Die Organisation der Turniere geschieht (hauptsächlich) durch Mitglieder der Freien Baptisten-Gemeinde (FBG) Erlangen. Die Turniere wurden ins Leben gerufen, um die Gemeinschaft und Beziehungen innerhalb unseres bestehenden Netzwerks der Freien Baptisten-Gemeinden sowie ausgewählter weiterer Freien Gemeinden zu stärken und zu vertiefen. Zudem ist die persönliche Einladung von Gästen ein großes Anliegen, um Gottes gute Botschaft zu teilen und seine Liebe zu uns beim gemeinsamen Sport praktisch weiterzugeben. ''Ob ihr nun esst oder trinkt oder sonst etwas tut — tut alles zur Ehre Gottes!'' - 1. Korinther 10,31 (Die Bibel)."
     },
 
     // --- SEKTION: KONTAKT ---

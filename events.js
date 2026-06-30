@@ -18,7 +18,7 @@ const TOURNAMENT_EVENTS = [
         details: [
 		{ 
                 title: "💰 Startgebühr inkl. Mittagessen", 
-                text: "7€ pro Spieler, 4€ pro Zuschauer",
+                text: "9€ pro Spieler, 4€ pro Zuschauer",
                 image: "" // Kein Bild für diesen Bereich
             },            
 

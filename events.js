@@ -60,8 +60,8 @@ const TOURNAMENT_EVENTS = [
         turnierplanUrl: "https://www.meinturnierplan.de/c/8ty2ubn4/beachvolleyball-turnier-25-07-2026/", 
 
         // --- FOTO GALERIE (Nach dem Turnier) ---
-        googleFotosUrl: "https://photos.google.com", 
-        albumPassword: "fbg"
+        googleFotosUrl: "https://www.dropbox.com/scl/fo/66dx05myrg3ex4m7sc6jk/AAh-7_YMe40n-UeeXwaNSnk?rlkey=jedkdnb60g1javcyvo8qsvy7u&st=b3iydrea&dl=0", 
+        albumPassword: "dankejesus"
     },
 
 

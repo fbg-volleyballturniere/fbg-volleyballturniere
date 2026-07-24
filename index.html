@@ -702,7 +702,7 @@
             finalBody += `\n\nSonstiges / Notizen:\n${sonstiges}`;
 
             window.location.href = `mailto:${WEBSITE_CONTENT.emailReceiverDummy}?subject=${encodeURIComponent(finalSubject)}&body=${encodeURIComponent(finalBody)}`;
-            alert("Mail-Anmeldung generiert!");
+            alert("Verschicke die E-Mail über dein Standard-E-Mail-Programm, um die Anmeldung abzuschließen!");
             document.getElementById('registrationForm').reset();
             checkCommunityStatus();
             buildTournamentDropdown();
@@ -721,7 +721,7 @@
             
             window.location.href = `mailto:${receiver}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(finalBody)}`;
             
-            alert("Newsletter-Anmeldung generiert!");
+            alert("Verschicke die E-Mail über dein Standard-E-Mail-Programm, um dich für den Newsletter anzumelden!");
             document.getElementById('newsletterForm').reset();
         }
 

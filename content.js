@@ -4,7 +4,7 @@
    ========================================================================= */
 
 const WEBSITE_CONTENT = {
-    currentActiveSport: "beach", // Standard beim Laden der Seite ("halle" oder "beach")
+    currentActiveSport: "halle", // Standard beim Laden der Seite ("halle" oder "beach")
     headerTitle: "Volleyball Turniere - FBG Erlangen",
     emailReceiverDummy: "fbgerlangen.volleyball@gmail.com",
 

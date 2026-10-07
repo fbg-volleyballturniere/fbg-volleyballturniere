@@ -66,4 +66,69 @@ const TOURNAMENT_EVENTS = [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+{
+        id: "halle-2027",
+        sport: "halle",
+        title: "Hallen-Volleyball-Turnier 2027",
+        datum: "2027-02-13T10:00:00", 
+        ort: "Sporthalle Röttenbach",
+        coverImage: "bilder/Hallen-Turnier-2027.png",
+        description: "Unser Hallen-Turnier in der schönen Röttenbacher Halle. Wir freuen uns auf einen Tag voller spannender Partien, Gemeinschaft und Teamgeist!",
+        
+        // --- FLEXIBLE DETAILS (Jeder Block kann Text UND optional ein eigenes Bild haben!) ---
+        details: [
+		          
+	    { 
+                title: "", 
+                text: "",
+                image: "" // Bild 
+
+            },
+ { 
+                title: "❗Turnierstart noch ausstehend❗", 
+                text: "Ob das Turnier um 10 Uhr oder um 13 Uhr startet ist noch nicht sicher. Wir informieren Sie über unseren Newsletter, sobald wir nähere Informationen haben.",
+                image: "" // Bild 
+
+            },
+
+            { 
+                title: "🅿️ Parken", 
+                text: "Das Parken ist NUR an den gekennzeichneten Orten möglich!",
+                image: "bilder/Parken-Roettenbach.png" // Bild 
+            },
+		{ 
+                title: "⏰ Ende", 
+                text: "Geplantes Turnierende ist 18:00 Uhr.",
+                image: "" // Bild 
+
+            },
+
+
+        ],
+
+        
+        // --- EXTERNE LINKS (Einfach Link eintragen oder "" leer lassen) ---
+        mapsUrl: "https://maps.app.goo.gl/PPnHPKJBnDdUaJEYA", 
+        turnierplanUrl: "", 
+
+        // --- FOTO GALERIE (Nach dem Turnier) ---
+        googleFotosUrl: "", 
+        albumPassword: "blank"
+    },
+
+
+
+
+
 ];

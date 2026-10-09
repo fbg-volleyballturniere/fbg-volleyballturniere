@@ -131,4 +131,63 @@ const TOURNAMENT_EVENTS = [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+	{
+        id: "beach-2027", //halle oder beach
+        sport: "beach", // halle oder beach
+        title: "Beach-Volleyball-Turnier 2027",
+        datum: "2027-06-05T10:00:00", 
+        ort: "TS Herzogenaurach",
+        coverImage: "bilder/Beach-Turnier-2027.png",
+        description: "Unser Sommer-Turnier auf der schönen Anlage der TS Herzogenaurach. Wir freuen uns auf Sonne, Spaß und Gemeinschaft.",
+        
+        // --- FLEXIBLE DETAILS (Jeder Block kann Text UND optional ein eigenes Bild haben!) ---
+        details: [
+		          
+	    { 
+                title: "", 
+                text: "",
+                image: "" // Bild 
+
+            },
+
+            { 
+                title: "🅿️ Parken", 
+                text: "Das Parken ist vor dem Sportheim möglich.",
+                image: "bilder/Parken-Herzogenaurach.png" // Bild für den Turnierplan / Lageplan
+            },
+		{ 
+                title: "⏰ Ende", 
+                text: "Geplantes Turnierende ist 18:00 Uhr.",
+                image: "" // Bild 
+
+            },
+
+
+        ],
+
+        
+        // --- EXTERNE LINKS (Einfach Link eintragen oder "" leer lassen) ---
+        mapsUrl: "https://maps.app.goo.gl/PtVu3RWGQisEudbu9", 
+        turnierplanUrl: "", 
+
+        // --- FOTO GALERIE (Nach dem Turnier) ---
+        googleFotosUrl: "", 
+        albumPassword: "blank"
+    },
+
+
+
+
+
 ];

@@ -1,4 +1,8 @@
-## Hi there 👋
+Der Code ist bewusst MODULAR gestaltet!
+
+Änderungen vorzugsweise nur in:
+ - Events: Copy + Paste eines bestehenden Turniers und aktualisieren der Daten; ab und zu alte Turniere löschen
+ - Teams: Hinzufügen von Gemeinden die in der Anmeldeliste auftauchen
 
 <!--
 **fbg-volleyballturniere/fbg-volleyballturniere** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.

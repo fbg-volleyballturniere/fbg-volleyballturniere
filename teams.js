@@ -21,6 +21,7 @@ const REGISTERED_COMMUNITIES = [
     "FBG Donaustadt",
     "Bibelgemeinde Wilhermsdorf",
     "Christliche Gemeinde Bamberg",
+    "EfA Stuttgart"
 //    "Fränkische Volksmission Nürnberg",
 //    "Christliche Versammlung Augsburg",
 //    "",
